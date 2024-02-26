@@ -19,6 +19,7 @@ import styled from "styled-components";
 import { FaHeadphones } from "react-icons/fa";
 import ReactPlayer from 'react-player';
 import FileUpload from "./components/FileUpload";
+import { height } from "@mui/system";
 
 function stringToColor(string) {
 	let hash = 0;
@@ -384,14 +385,24 @@ const Chat = () => {
 						<Avatar className="large-avatar" {...stringAvatar(users)} />
 					</div>
 					<div className="chat__contact-wrapper" >
-						<h2 className="chat__contact-name"> {users}</h2>
-						<p className="chat__contact-desc">
-							{modelo} {agente && <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FaHeadphones /> {agente}</span>}
-						</p>
-					</div>
-					<div className="chat_id" >
+						<div style={{display:'flex', justifyContent:'space-between'}}>
+							<h2 className="chat__contact-name" style={{width: 'fit-content'}}> {users}</h2>
+							<h3 className="chat__contact-desc" style={{fontWeight: 800}}>ID: {cotizacion}</h3>
+						</div>		
+						<div style={{display:'flex', justifyContent:'space-between', gap:'10px'}}>
+							<p className="chat__contact-desc">
+								{modelo} 
+							</p>
+							{agente && 
+								<div style={{display: 'flex',justifyContent: 'center', alignItems: 'center',gap: '3px'}}>
+									<FaHeadphones style={{ fontSize: '0.6rem' }} />
+									<span style={{ fontSize: '0.8rem', textOverflow:'ellipsis'}}> {agente}</span>
+								</div>
+							}
+						</div>						
+			
 
-						<h3 className="chat__contact-desc2"><span className="negritable">ID: {cotizacion}</span></h3>
+			
 					</div>
 				</header>
 				<div className="chat__content" style={{ overflowY: 'scroll' }} onScroll={handleScroll}>
@@ -467,15 +478,13 @@ const Chat = () => {
 													<span style={{ color: '#12213b', fontSize: '12px', fontWeight: '300' }}>{mensaje.content.split('https://')[0]}</span> {/* Muestra la parte del texto */}
 													<a href={`https://${mensaje.content.split('https://')[1]}`} style={{ color: 'var(--link)', fontSize: '12px', fontWeight: '200' }} target="_blank">{mensaje.content.split('https://')[1]}</a> {/* Muestra el enlace como un enlace */}
 												</div>
-											) : mensaje.titulo != "" && mensaje.titulo != null && !mensaje.content.includes("linkmi") ? (
-												<div style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
-													<div style={{ display: 'flex', alignItems: 'center' }}>
-														<img style={{ width: '9rem', height: '12rem', marginLeft: '5rem' }} src={mensaje.titulo} alt="Imagen" />
-														<span style={{ color: '#12213b', fontSize: '12px', fontWeight: '300', marginLeft: '1rem', flex: 1, wordWrap: 'break-word' }}>
-															{mensaje.content}
-														</span>
-													</div>
-												</div>
+											) : mensaje.titulo != "" && mensaje.titulo != null && !mensaje.content.includes("linkmi") ? (										
+												<div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', cursor: 'pointer', gap: '10px'}}>
+													<img style={{width: '100%', height: '100%', aspectRatio: '16/9', objectFit: 'cover'}} src={mensaje.titulo} alt="Imagen" />
+													<span style={{ color: '#12213b', fontSize: '12px', fontWeight: '300', flex: 1, wordWrap: 'break-word' }}>
+														{mensaje.content}
+													</span>
+												</div>											
 											) : (
 												<span> {mensaje.content}</span>
 											)}
