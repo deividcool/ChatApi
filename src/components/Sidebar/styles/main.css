@@ -1,0 +1,417 @@
+@import url(./darktheme.css);
+/* Estilos para el círculo del check */
+.check-circle {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000; /* Borde del círculo */
+    border-radius: 50%; /* Hace que el borde sea redondeado para formar un círculo */
+    display: inline-block;
+    margin-right: 10px; /* Espacio entre el círculo y el texto */
+  }
+  
+  /* Estilos para la lista de checks */
+  .check-list {
+    list-style: none; /* Quita los puntos de la lista */
+    padding: 0; /* Quita el espacio alrededor de la lista */
+  }
+  
+  /* Estilos para cada elemento de la lista */
+  .check-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Espacio entre cada elemento de la lista */
+  }
+  
+  /* Estilos para el texto del check */
+  .check-list span {
+    font-size: 16px;
+  }
+
+  .check-circle.selected {
+    background-color: #1CD8CD; /* Azul cielo */
+    border-color: #1CD8CD; /* Borde del mismo color */
+  }
+
+.fa-search-icon {
+    color: gray;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.no-result-message {
+    text-align: center;
+    margin-top: 8px; /* Espacio superior del botón (puedes ajustarlo) */
+    /* Agrega más estilos según tus necesidades, como tamaño de fuente, color, margen, etc. */
+  }
+.button-reset {
+    background-color: #f00; /* Color de fondo del botón (puedes cambiarlo) */
+    color: #fff; /* Color del texto del botón (puedes cambiarlo) */
+    padding: 8px 16px; /* Espaciado interno del botón (puedes ajustarlo) */
+    border: none; /* Quitar el borde del botón */
+    border-radius: 4px; /* Radio de borde para hacerlo ligeramente redondeado (puedes ajustarlo) */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima del botón */
+    margin-top: 8px; /* Espacio superior del botón (puedes ajustarlo) */
+  }
+  
+  .button-reset:hover {
+    background-color: #ff5555; /* Color de fondo al pasar el cursor sobre el botón (puedes cambiarlo) */
+  }
+/* Estilos para el contenedor del selector de fechas */
+.date-range-wrapper {
+    position: absolute;
+    top: 200px;
+    left: 40px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999; /* Asegura que el selector esté por encima de todo el contenido */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo transparente con opacidad del 50% */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Estilos para el contenedor interno del selector de fechas */
+  .date-range-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
+  
+  /* Estilos para el botón de aplicar del selector de fechas */
+  .date-range-wrapper .rdrApplyButton {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  /* Estilos para el texto del botón de aplicar del selector de fechas */
+  .date-range-wrapper .rdrApplyButton span {
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  /* Estilos para los días seleccionados en el calendario */
+  .date-range-wrapper .rdrDateRangeWrapper .rdrDateRange .rdrSelected {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  /* Estilos para los días resaltados al pasar el cursor en el calendario */
+  .date-range-wrapper .rdrDateRangeWrapper .rdrDateRange .rdrInRange .rdrDayPreview:not(.rdrStartEdge):not(.rdrEndEdge):not(.rdrInRange):hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: rgba(245, 243, 243, 0.97);
+}
+.loading-spinner p {
+    font-size: 20px;
+    color: #0a0a0a;
+}
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.3);
+    border-top: 4px solid #11dab5;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin is linear infinite;
+}
+@keyframes spin{
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+}
+.loading-text {
+    margin-left: 10px;
+    font-size: 18px;
+    color: #070707;
+}
+
+.sidebar {
+    max-width: 310px;
+    flex: 40%;
+    border-right: 1px solid #DADADA;
+    display: flex;
+    flex-direction: column;
+    background: #CDD6D5;
+}
+
+/*  Sidebar Header */
+
+.sidebar__avatar-wrapper {
+    width: 110px;
+    height: 40px;
+}
+
+
+/* End Sidebar Header */
+
+/*  Sidebar Alert */
+
+.sidebar__alert {
+    min-height: 85px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar__alert--warning {
+    background: #FED859;
+}
+
+.sidebar__alert--info {
+    background: #9DE1FE;
+}
+
+.sidebar__alert--danger {
+    background: #F3645B;
+}
+
+.sidebar__alert-icon-wrapper {
+    margin-right: 10px;
+}
+
+.sidebar__alert-icon {
+    color: white;
+}
+
+.sidebar__alert-texts {
+    flex: 1;
+}
+
+.sidebar__alert-text:first-of-type {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #343738;
+}
+
+.sidebar__alert-text:last-of-type {
+    font-size: 0.85rem;
+    color: #414A4E;
+    line-height: 17px;
+}
+
+.sidebar__alert--danger .sidebar__alert-text:first-of-type,
+.sidebar__alert--danger .sidebar__alert-text:last-of-type {
+    color: white;
+}
+
+/* End Sidebar Alert */
+
+/*  Sidebar Search */
+.search-wrapper {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos dentro del contenedor */
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    width: 280px; /* Ajusta el ancho según tus necesidades */
+  }
+  
+  .search-icons {
+    display: flex;
+    align-items: center;
+    margin-right: 5px; /* Espacio entre el icono de búsqueda y el input */
+  }
+  
+  .search {
+    flex: 1; /* Permite que el input ocupe todo el espacio restante */
+    border: none;
+    outline: none;
+  }
+  
+  .filter-icon {
+    margin-left: 5px; /* Espacio entre el input y el icono de filtro */
+    color: rgb(168, 162, 162);
+  }
+.sidebar__search-wrapper {
+    padding: 7px 10px;
+    height: 50px;
+    background: #F6F6F6;
+    position: relative;
+}
+
+/* End Sidebar Search */
+
+/*  Sidebar Contact List */
+
+.sidebar__contacts {
+    flex: 1;
+    overflow-y: scroll;
+    background: #F5F5F5;
+    border-top: 1px solid #DADADA;
+    position: relative;
+}
+
+.sidebar-contact {
+    height: 72px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #EBEBEB;
+    cursor: pointer;
+}
+
+.sidebar-contact:hover {
+    opacity: 0.9;
+    background-color: #b5c7c9;
+}
+
+.sidebar-contact__avatar-wrapper {
+    width: 50px;
+    height: 50px;
+    margin-top: 2%;
+    margin-right: 10px;
+}
+
+.sidebar-contact__content {
+    overflow: hidden;
+    flex: 1;
+}
+
+.sidebar-contact__top-content,
+.sidebar-contact__bottom-content,
+.sidebar-contact__message-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+}
+
+.sidebar-contact__name,
+.sidebar-contact__message {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sidebar-contact__top-content {
+    margin-bottom: -10px;
+}
+
+.sidebar-contact__name {
+    color: #000000;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.sidebar-contact__time {
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.45);
+}
+
+.sidebar-contact__message-wrapper {
+    color: #00000099;
+    font-size: 0.5rem;
+    margin-right: 3px;
+    overflow: hidden;
+}
+
+.sidebar-contact__message-icon {
+    color: #B3B3B3;
+    margin-right: 3px;
+}
+
+.sidebar-contact__message-icon--blue {
+    color: #1c4bca;
+}
+
+.sidebar-contact__message--unread {
+    color: #000000;
+    font-weight: 500;
+}
+
+.sidebar-contact__icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+.sidebar-contact__unread {
+    display: inline-block;
+    color: white;
+    background-color: rgba(95, 95, 95, 0.637);
+    border-radius: 18px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 3px;
+    line-height: 18px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.sidebar-contact__unread:hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    background-color: #d1d1d1;
+    color: #000000;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: -30px;
+    margin-left: -40px;
+    z-index: 1;
+    width: 3.5rem;
+    height: 1rem;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+
+.total-records {
+    text-align: center;
+    font-size: 12px;
+    color: #656262;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.sidebar-filter-icon:hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 9px;
+    border-radius: 15px;
+    margin-top: -22px;
+    margin-left: 22px;
+    z-index: 9999;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-size: 13px;
+}
+
+
+
+/*  End Sidebar Contact List */
+
+@media screen and (min-width: 1000px) and (max-width: 1300px) {
+    .sidebar {
+        flex: 15%;
+    }
+
+    .sidebar~div {
+        flex: 85%;
+    }
+}
+
+@media screen and (min-width: 1301px) {
+    .sidebar {
+        flex: 15%;
+    }
+
+    .sidebar~div {
+        flex: 85%;
+    }
+}
