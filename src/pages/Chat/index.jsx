@@ -20,6 +20,13 @@ import { FaHeadphones } from "react-icons/fa";
 import ReactPlayer from 'react-player';
 import FileUpload from "./components/FileUpload";
 import { height } from "@mui/system";
+import DragAndDrop from "./components/DragAndDrop";
+import './styles/stylesDragAndDrop.css';
+import FileIcon from "./components/FileIcon";
+import { IoDocumentText } from "react-icons/io5";
+
+  
+
 
 function stringToColor(string) {
 	let hash = 0;
@@ -74,12 +81,107 @@ const Chat = () => {
 	const pageRef = useRef(null);
 	const [bt, setBt] = useState(true);
 	const [isExpanded, setExpanded] = useState(false);
+	const [extension, setExtension] = useState(null);
 
-	const TextoPequeno = styled.div`
-			font-size: 0.5rem;
-			right: 20px;
 
-		`;
+	const [fileDetailsVisible, setFileDetailsVisible] = useState(false);
+	const [fileName, setFileName] = useState('');
+	const [hoverTimeout, setHoverTimeout] = useState(null);
+	const [previewUrl, setPreviewUrl] = useState(null);
+	
+	const handleDragOver = (event) => {
+		event.preventDefault();
+		event.currentTarget.classList.add('highlight');
+		clearTimeout(hoverTimeout);
+		closeSidebar()
+	};
+	
+	const handleDragLeave = (event) => {
+		event.currentTarget.classList.remove('highlight');
+		setHoverTimeout(setTimeout(() => {
+		setFileDetailsVisible(false);
+		}, 1000)); // Establecer el tiempo en milisegundos antes de ocultar el área de soltar
+	};
+
+	const handleDrop = (event) => {
+		event.preventDefault();
+		const file = event.dataTransfer.files[0];
+		setFileName(file.name);
+	  
+		// Verificar si el archivo es una imagen
+		if (file.type.startsWith('image/')) {
+		  const reader = new FileReader();
+		  reader.onload = () => {
+			// Obtener el contenido del archivo en formato Base64
+			const base64Content = reader.result;
+			setFileDetailsVisible(true);
+			setPreviewUrl(base64Content);
+		  };
+		  reader.readAsDataURL(file);
+		} else {
+		  setFileDetailsVisible(true);
+		  setPreviewUrl(null);
+		}
+	  
+		// Obtener la extensión del archivo
+		const getFileExtension = (fileName) => {
+		  return fileName.split('.').pop().toLowerCase();
+		};
+		const fileExtension = getFileExtension(file.name);
+		setExtension(fileExtension);
+	};
+
+	const handleCloseOverlay = () => {
+		setFileDetailsVisible(false);
+	};
+	
+	const handleSendButtonClick = () => {
+		// Aquí puedes agregar la lógica para enviar el archivo
+		
+		axios
+        .post(`${webhook}`, {
+            tipo: "3",
+            idasesor: idasesor,
+            idserial: idclient,
+            llave: llave,
+            name: fileName,
+            extension:extension,
+            archivo:previewUrl
+        })
+        .then(res => {
+            console.log(res)
+            setShowButton(false);
+            // Limpiar el input del archivo
+            inputFileRef.current.value = '';
+        })
+        .catch(e => {
+            console.log("error oportunidades " + e);
+        }); 
+		setFileDetailsVisible(false);
+	};
+	
+	const handleFileDetailsClick = (event) => {
+		event.stopPropagation();
+	  };
+
+	  const handleKeyDown = (event) => {
+		if (event.key === 'Escape') {
+		  setFileDetailsVisible(false);
+		}
+	  };
+
+	  useEffect(() => {
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+		  document.removeEventListener('keydown', handleKeyDown);
+		  clearTimeout(hoverTimeout);
+		};
+	  }, [hoverTimeout]);
+
+
+	
+
+
 
 
 
@@ -218,6 +320,7 @@ const Chat = () => {
 
 	const handleTipo2 = (id_serial) => {
 		console.log("handleTipo2" + id_serial)
+
 		axios
 			.post(`${webhook}`, {
 				tipo: "2",
@@ -231,7 +334,6 @@ const Chat = () => {
 			})
 			.catch(e => {
 				console.log("error oportunidades " + e);
-
 			})
 	}
 	const handleTipo3 = (id_serial) => {
@@ -366,7 +468,7 @@ const Chat = () => {
 		const scrollBottom = element.scrollHeight - element.clientHeight - element.scrollTop;
 
 
-		console.log(scrollBottom)
+		/* console.log(scrollBottom) */
 		if (scrollBottom > 54) {
 			setBt(true)
 		} else {
@@ -385,9 +487,9 @@ const Chat = () => {
 						<Avatar className="large-avatar" {...stringAvatar(users)} />
 					</div>
 					<div className="chat__contact-wrapper" >
-						<div style={{display:'flex', justifyContent:'space-between'}}>
+						<div style={{display:'flex', justifyContent:'space-between', width:'95%'}}>
 							<h2 className="chat__contact-name" style={{width: 'fit-content'}}> {users}</h2>
-							<h3 className="chat__contact-desc" style={{fontWeight: 800}}>ID: {cotizacion}</h3>
+							<h3 className="chat__contact-desc" style={{fontWeight: 800}}> <b>ID: {cotizacion}</b></h3>
 						</div>		
 						<div style={{display:'flex', justifyContent:'space-between', gap:'10px'}}>
 							<p className="chat__contact-desc">
@@ -404,8 +506,15 @@ const Chat = () => {
 
 			
 					</div>
-				</header>
-				<div className="chat__content" style={{ overflowY: 'scroll' }} onScroll={handleScroll}>
+				</header>		
+				<div 
+					className="chat__content" 
+					onDragOver={handleDragOver}
+					onDragLeave={handleDragLeave}
+					onDrop={handleDrop}
+					style={{ overflowY: 'scroll' }} 
+					onScroll={handleScroll}
+				>
 					{Object.keys(mensajes).map((fecha) => (
 						<div key={fecha}>
 							<div className="chat__date-wrapper">
@@ -417,7 +526,7 @@ const Chat = () => {
 								{mensajes[fecha].map((mensaje, index) =>
 
 									mensaje.post_envio === 'f' ? (
-										<div className="chat__msg chat__msg--sent" ref={pageRef}>
+										<div className="chat__msg chat__msg--sent" style={{display:'flex', flexDirection:'column',boxSizing: 'content-box'}} ref={pageRef}>
 
 											{mensaje.content.includes(".oga") ? (
 												<div className="chat__msg-audio">
@@ -470,8 +579,9 @@ const Chat = () => {
 											) : mensaje.content.includes(".linkmi") ? (
 												<div style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
 
-													<span style={{ color: '#12213b', fontSize: '12px', fontWeight: '300' }}></span> {/* Muestra la parte del texto */}
-													<a href={mensaje.titulo} className="botonLinkmi" target="_blank">Ver cotizaci&oacute;n</a> {/* Muestra el enlace como un enlace */}
+													<img style={{width: '100%', height: '300px', aspectRatio: '16/9', objectFit: 'cover', borderTopLeftRadius: '10px', borderTopRightRadius:'10px'}} src={mensaje.urlimagen} alt="Imagen Cotizacion"/>
+													
+													<a href={mensaje.titulo} className="botonLinkmi" target="_blank"><IoDocumentText style={{height:'1rem',width:'1rem',color:'white'}} />Ver cotización</a>
 												</div>
 											) : mensaje.content.includes("http://") || mensaje.content.includes("https://") ? (
 												<div style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
@@ -489,13 +599,16 @@ const Chat = () => {
 												<span> {mensaje.content}</span>
 											)}
 
-											<span className="chat__msg-filler"> </span>
-											<span className="chat__msg-footer">{mensaje.time.substring(0, 6)}</span>
-											<span className="chat__msg-filler"> </span>
-											<p className="chat__msg--username">
-												{mensaje.usuario}
+											<div style={{display:'flex',marginTop:'20px'}}>
+												<span className="chat__msg-filler"> </span>
+												<span className="chat__msg-footer">{mensaje.time.substring(0, 6)}</span>
+												<span className="chat__msg-filler"> </span>
+												<p className="chat__msg--username">
+													{mensaje.usuario}
 
-											</p>
+												</p>
+											</div>
+											
 
 										</div>
 									) : (
@@ -565,7 +678,30 @@ const Chat = () => {
 							</div>
 						</div>
 					))}
+					{fileDetailsVisible && (
+						<div className="overlay" id="overlay" onClick={handleCloseOverlay}>
+						<div className="file-details" id="file-details" onClick={handleFileDetailsClick}>
+							<div style={{display:'flex', flexDirection:'column', flex: '1', alignItems:'center',justifyContent:'center', gap: '20px'}}>
+								{previewUrl ? (
+									<img src={previewUrl} alt="Vista previa" style={{height: '100%', maxWidth:'300px', aspectRatio: '16/9'}}/>
+									) : (
+									<FileIcon fileName={fileName} />										
+									)
+								}
+								
+								<p id="file-name" className="file-name">{fileName}</p>
+							</div>
+							<div style={{display:'flex',width:'100%', justifyContent:'end'}}>
+								<button aria-label="Send message" onClick={handleSendButtonClick}>
+									<Icon id="send" className="chat__input-icon" />
+								</button>
+							</div>
+							
+						</div>
+						</div>
+					)}
 				</div>
+				{!fileDetailsVisible && (
 				<footer className="chat__footer">
 
 					{bt ? (
@@ -631,6 +767,7 @@ const Chat = () => {
 						</button>
 					</div>
 				</footer>
+				)}
 			</div>
 			<aside className={`chat-sidebar ${showProfileSidebar ? "chat-sidebar--active" : ""}`}>
 				<header className="header chat-sidebar__header">

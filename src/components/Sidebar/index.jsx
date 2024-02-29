@@ -11,10 +11,6 @@ import { FaSearch } from 'react-icons/fa';
 import { wsp_api } from "../../context/apis";
 import { FaFilter } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
-/* import { Calendar, DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // Importa los estilos del selector de fechas
-import 'react-date-range/dist/theme/default.css'; // Importa el tema del selector de fechas 
-import { es } from 'date-fns/locale';  */
 import DateRangeModal from "./DateRangeModal";
 import { vi } from "date-fns/locale";
 
