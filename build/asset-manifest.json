@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "https://api.exiware.co/api_chat/static/css/main.279d2ad8.css",
+    "main.js": "https://api.exiware.co/api_chat/static/js/main.f2848108.js",
+    "static/js/453.41255e95.chunk.js": "https://api.exiware.co/api_chat/static/js/453.41255e95.chunk.js",
+    "static/media/svg.jpg": "https://api.exiware.co/api_chat/static/media/svg.911bd7a948e357797fa4.jpg",
+    "index.html": "https://api.exiware.co/api_chat/index.html",
+    "main.279d2ad8.css.map": "https://api.exiware.co/api_chat/static/css/main.279d2ad8.css.map",
+    "main.f2848108.js.map": "https://api.exiware.co/api_chat/static/js/main.f2848108.js.map",
+    "453.41255e95.chunk.js.map": "https://api.exiware.co/api_chat/static/js/453.41255e95.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.279d2ad8.css",
+    "static/js/main.f2848108.js"
+  ]
+}

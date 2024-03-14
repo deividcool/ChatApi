@@ -19,11 +19,12 @@ import styled from "styled-components";
 import { FaHeadphones } from "react-icons/fa";
 import ReactPlayer from 'react-player';
 import FileUpload from "./components/FileUpload";
-import { height } from "@mui/system";
+import { color, height } from "@mui/system";
 import DragAndDrop from "./components/DragAndDrop";
 import './styles/stylesDragAndDrop.css';
 import FileIcon from "./components/FileIcon";
 import { IoDocumentText } from "react-icons/io5";
+import { AsesorAsig } from "./components/Asesor";
 
   
 
@@ -77,6 +78,8 @@ const Chat = () => {
 	const [texto_div, setTexto_div] = useState(false);
 	const [ubicacion_div, setUbicacion_div] = useState(false);
 	const [pdf_div, setPdf_div] = useState(false);
+	const [GtAsesor, setGtAsesor] = useState(false);
+	
 	const [link_div, setLink_div] = useState(false);
 	const pageRef = useRef(null);
 	const [bt, setBt] = useState(true);
@@ -137,6 +140,8 @@ const Chat = () => {
 	
 	const handleSendButtonClick = () => {
 		// Aquí puedes agregar la lógica para enviar el archivo
+		const parts = previewUrl.split(",");
+		const valorDespuesDeLaComa = parts[1];
 		
 		axios
         .post(`${webhook}`, {
@@ -146,13 +151,10 @@ const Chat = () => {
             llave: llave,
             name: fileName,
             extension:extension,
-            archivo:previewUrl
+            archivo:valorDespuesDeLaComa
         })
         .then(res => {
             console.log(res)
-            setShowButton(false);
-            // Limpiar el input del archivo
-            inputFileRef.current.value = '';
         })
         .catch(e => {
             console.log("error oportunidades " + e);
@@ -214,6 +216,7 @@ const Chat = () => {
 		setPdf_div(false)
 		setUbicacion_div(false);
 		setLink_div(false);
+		setGtAsesor(false)
 
 		axios
 			.post(`${wsp_api}`, {
@@ -241,6 +244,7 @@ const Chat = () => {
 		setTexto_div(false);
 		setPdf_div(false);
 		setLink_div(false);
+		setGtAsesor(false)
 
 		axios
 			.post(`${wsp_api}`, {
@@ -267,7 +271,7 @@ const Chat = () => {
 		setTexto_div(false)
 		setUbicacion_div(false)
 		setLink_div(false)
-
+		setGtAsesor(false)
 		axios
 			.post(`${wsp_api}`, {
 				tag: "elementos",
@@ -285,6 +289,16 @@ const Chat = () => {
 				console.log("error oportunidades " + e);
 			})
 	};
+
+	const handleOnClickElementGestionAsesores = () => {
+		setShowProfileSidebar(true);
+		setHeading("Gestion Asesor");
+		setGtAsesor(true)
+		setPdf_div(false)
+		setTexto_div(false)
+		setUbicacion_div(false)
+		setLink_div(false)
+	}
 	const handleOnClickLink = () => {
 		setShowProfileSidebar(true);
 		setHeading("LINKS");
@@ -292,6 +306,7 @@ const Chat = () => {
 		setTexto_div(false);
 		setUbicacion_div(false);
 		setPdf_div(false);
+		setGtAsesor(false)
 
 		axios
 			.post(`${wsp_api}`, {
@@ -379,6 +394,7 @@ const Chat = () => {
 
 	const closeSidebar = () => {
 		setShowProfileSidebar(false);
+		setGtAsesor(false)
 	};
 	const handleOnClickProfile = () => {
 		setShowProfileSidebar(!showProfileSidebar);
@@ -477,6 +493,38 @@ const Chat = () => {
 	}
 
 
+	const arrayAsesor =[
+			{
+			  "id": 1,
+			  "name": "John Doe"
+			},
+			{
+			  "id": 2,
+			  "name": "John tre"
+			},
+			{
+			  "id": 3,
+			  "name": "Rauel Doe"
+			},
+			{
+			  "id": 4,
+			  "name": "Wisin Doe"
+			},
+			{
+			  "id": 5,
+			  "name": "Yandel Fatel"
+			},
+			{
+			  "id": 6,
+			  "name": "Jhon Week"
+			},
+			{
+			  "id": 7,
+			  "name": "Dalton Emanuel Country"
+			}
+		  ]
+	
+
 
 	return (
 		<div className="chat" >
@@ -546,15 +594,15 @@ const Chat = () => {
 													{/* <video style={{ width: '5rem', height: '7rem' }} className="chat__msg chat__vid-wrapper" controls src={mensaje.content} />*/}													</div>
 											) : mensaje.content.includes(".jpeg") ||  mensaje.content.includes(".jpg") ? (
 												<div >
-													<img style={{ width: '100%', height: '100%', marginLeft: '5rem' }} src={mensaje.content} alt="Imagen" />
+													<img style={{ width: '100%', height: '100%' }} src={mensaje.content} alt="Imagen" />
 												</div>
 											) : mensaje.content.includes(".png") ? (
 												<div className="chat__msg" >
-													<img style={{ width: '100%', height: '100%', marginLeft: '5rem' }} src={mensaje.content} alt="Thumbnail" />
+													<img style={{ width: '100%', height: '100%'}} src={mensaje.content} alt="Thumbnail" />
 												</div>
 											) : mensaje.content.includes(".webp") ? (
 												<div >
-													<img style={{ width: '100%', height: '100%', marginLeft: '5rem' }} src={mensaje.content} alt="GIF" />
+													<img style={{ width: '100%', height: '100%'}} src={mensaje.content} alt="GIF" />
 												</div>
 											) : mensaje.content.includes(".pdf") ? (
 												<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', cursor: 'pointer',gap: "0.5rem" }}>
@@ -753,6 +801,13 @@ const Chat = () => {
 								>
 									<Icon id="attachDocument" className="chat__attach-icon" />
 								</button>
+								<button
+									className="chat__attach-btn"
+									onClick={handleOnClickElementGestionAsesores}
+									title="Gestion Asesor"
+								>
+									<Icon id="attachUser" className="chat__attach-icon" />
+								</button>
 							</div>
 						</div>
 						<input
@@ -849,6 +904,15 @@ const Chat = () => {
 								</div>
 							</div>
 						))
+					)}
+
+					{GtAsesor && (
+						<div className="profile__section">
+							<h2 className="profile__heading"> Gestion Asesor </h2>
+							{arrayAsesor.map((item) => (
+								<AsesorAsig asesorname={item.name} />
+							))}
+						</div>						
 					)}
 				</div>
 			</aside>

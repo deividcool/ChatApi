@@ -25,8 +25,33 @@ function DragAndDrop() {
     setFileDetailsVisible(false);
   };
 
-  const handleSendButtonClick = () => {
+  const handleSendButtonClicks = () => {
     // Aquí puedes agregar la lógica para enviar el archivo
+    /* if (fileData) {
+      let name = fileData.fileName.split('.')[0];
+      let base64 = fileData.base64.split(',')[1];
+      let extension = fileData.fileExtension;
+      closeSidebar();
+      axios
+      .post(`${webhook}`, {
+          tipo: "3",
+          idasesor: idasesor,
+          idserial: idclient,
+          llave: llave,
+          name: name,
+          extension:extension,
+          archivo:base64
+      })
+      .then(res => {
+          console.log(res)
+          setShowButton(false);
+          // Limpiar el input del archivo
+          inputFileRef.current.value = '';
+      })
+      .catch(e => {
+          console.log("error oportunidades " + e);
+      });
+  }  */
     console.log('Enviando archivo:', fileName);
     setFileDetailsVisible(false);
   };
@@ -46,7 +71,7 @@ function DragAndDrop() {
         <div className="overlay" id="overlay" onClick={handleCloseOverlay}>
           <div className="file-details" id="file-details">
             <p id="file-name">Archivo: {fileName}</p>
-            <button id="send-button" onClick={handleSendButtonClick}>
+            <button id="send-button" onClick={()=> handleSendButtonClicks()}>
               Enviar
             </button>
           </div>
